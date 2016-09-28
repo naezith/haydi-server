@@ -1,0 +1,1 @@
+@reboot /bin/sh /root/haydiserv_init.sh
