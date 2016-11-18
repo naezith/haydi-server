@@ -26,7 +26,14 @@ module.exports = function(database){
 							return act;
 						}
 					});
-				})
+				});
+				
+				res.end(JSON.stringify({ 
+					status: utils.respondMSG.SUCCEED,
+					data: {
+						activities : acts
+					}
+				}));
 			}
 		});
 	});
