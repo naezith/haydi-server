@@ -51,7 +51,12 @@ var dbConnection = mysql.createConnection({
 	database: 'haydi_db'
 });
 
-//app.use('/register', require('./routes/register')(dbConnection));
+app.use('/selam', 			require('./routes/selam')(dbConnection));
+app.use('/login', 			require('./routes/login')(dbConnection));
+app.use('/filterUsers', 	require('./routes/filterUsers')(dbConnection));
+app.use('/getActivities', 	require('./routes/getActivities')(dbConnection));
+app.use('/submitActivity', 	require('./routes/submitActivity')(dbConnection));
+app.use('/answerActivity', 	require('./routes/answerActivity')(dbConnection));
 
 
 
