@@ -15,7 +15,8 @@ module.exports = function(database){
 			else{
 				var acts = results;
 				acts.map(function(act){ 
-					database.query('SELECT * FROM user WHERE id IN(SELECT user_id FROM act_guest WHERE activity_id = ?)', [act.id], function(err, results, fields){
+					database.query('SELECT *, (SELECT status FROM act_guest WHERE activity_id = ? AND user.id = user_id) AS status ' +
+									'FROM user WHERE id IN(SELECT user_id FROM act_guest WHERE activity_id = ?)', [act.id, act.id], function(err, results, fields){
 						if(err){
 							console.log(err);
 							res.end(JSON.stringify({ status: utils.respondMSG.DB_ERROR }));
