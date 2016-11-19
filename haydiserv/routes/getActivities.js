@@ -1,10 +1,25 @@
 var express = require('express');
+var async = require('async');
 var utils = require('./custom_utils.js');
 
 module.exports = function(database){
 	var router = express.Router();
 	
 	router.post('/', function(req, res, next) {
+		function getGuests(act){
+			return function(callback){
+				database.query('SELECT *, (SELECT status FROM act_guest WHERE activity_id = ? AND user.id = user_id) AS status ' +
+												'FROM user WHERE id IN(SELECT user_id FROM act_guest WHERE activity_id = ?)', 
+												[act.id, act.id], function(err, results, fields){ 
+					if(err) return callback(null, false);
+					
+					act.guests = results;
+					
+					callback(null, true); 
+				});
+			};
+		}
+		
 		res.writeHead(200, {"Content-Type": "application/json"});
 		database.query('SELECT * FROM activity WHERE id IN (SELECT activity_id FROM act_guest WHERE user_id = ?)', 
 				[req.body.user_id], function(err, results, fields){
@@ -14,26 +29,18 @@ module.exports = function(database){
 			}
 			else{
 				var acts = results;
-				acts.map(function(act){ 
-					database.query('SELECT *, (SELECT status FROM act_guest WHERE activity_id = ? AND user.id = user_id) AS status ' +
-									'FROM user WHERE id IN(SELECT user_id FROM act_guest WHERE activity_id = ?)', [act.id, act.id], function(err, results, fields){
-						if(err){
-							console.log(err);
-							res.end(JSON.stringify({ status: utils.respondMSG.DB_ERROR }));
-						}
-						else{
-							act.guests = results;
-							return act;
-						}
-					});
-				});
+				var queries = [];
 				
-				res.end(JSON.stringify({ 
-					status: utils.respondMSG.SUCCEED,
-					data: {
-						activities : acts
-					}
-				}));
+				for(var i = 0; i < acts.length; ++i) queries.push(getGuests(acts[i]));
+				
+				async.parallel(queries, function(err, results, fields){
+					res.end(JSON.stringify({ 
+						status: utils.respondMSG.SUCCEED,
+						data: {
+							activities : acts
+						}
+					}));
+				});
 			}
 		});
 	});
