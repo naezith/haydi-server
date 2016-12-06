@@ -20,12 +20,11 @@ module.exports = function(database){
 			};
 		}
 		
-		res.writeHead(200, {"Content-Type": "application/json"});
 		database.query('SELECT * FROM activity WHERE id IN (SELECT activity_id FROM act_guest WHERE user_id = ?)', 
 				[req.body.user_id], function(err, results, fields){
 			if(err){
 				console.log(err);
-				res.end(JSON.stringify({ status: utils.respondMSG.DB_ERROR }));
+				res.json({ status: utils.respondMSG.DB_ERROR });
 			}
 			else{
 				var acts = results;
@@ -34,12 +33,12 @@ module.exports = function(database){
 				for(var i = 0; i < acts.length; ++i) queries.push(getGuests(acts[i]));
 				
 				async.parallel(queries, function(err, results, fields){
-					res.end(JSON.stringify({ 
+					res.json({ 
 						status: utils.respondMSG.SUCCEED,
 						data: {
 							activities : acts
 						}
-					}));
+					});
 				});
 			}
 		});

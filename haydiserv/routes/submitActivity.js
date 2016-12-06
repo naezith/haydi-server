@@ -5,12 +5,11 @@ module.exports = function(database){
 	var router = express.Router();
 	
 	router.post('/', function(req, res, next) {
-		res.writeHead(200, {"Content-Type": "application/json"});
 		database.query('INSERT INTO activity (author_id, name, date, time, location) VALUES (?, ?, ?, ?, ?)', 
 				[req.body.author_id, req.body.name, req.body.date, req.body.time, req.body.location], function(err, results, fields){
 			if(err){
 				//console.log(err);
-				res.end(JSON.stringify({ status: utils.respondMSG.DB_ERROR }));
+				res.json({ status: utils.respondMSG.DB_ERROR });
 			}
 			else {
 				var act_id = results.insertId;
@@ -18,15 +17,15 @@ module.exports = function(database){
 						[req.body.guests.map(function(g){ return [g, act_id, 0]; })], function(err, results, fields){
 					if(err){
 						//console.log(err);
-						res.end(JSON.stringify({ status: utils.respondMSG.DB_ERROR }));
+						res.json({ status: utils.respondMSG.DB_ERROR });
 					}
 					else {
-						res.end(JSON.stringify({ 
+						res.json({ 
 							status: utils.respondMSG.SUCCEED,
 							data: {
 								activity_id : act_id
 							}
-						}));
+						});
 					}
 				});
 			}
