@@ -20,7 +20,7 @@ module.exports = function(database){
 			};
 		}
 		
-		database.query('SELECT * FROM activity WHERE id IN (SELECT activity_id FROM act_guest WHERE user_id = ?)', 
+		database.query('SELECT * FROM activity WHERE id IN (SELECT activity_id FROM act_guest WHERE user_id = ? AND status < 2)', 
 				[req.body.user_id], function(err, results, fields){
 			if(err){
 				console.log(err);
