@@ -1,0 +1,9 @@
+Linux CentOS 7 kurulur.
+Node.js, MySQL, phpMyAdmin yüklenir.
+haydiserv klasörü /home klasörüne tasinir. 
+“cd /home/haydiserv” yazilarak application server klasörüne gidilir.
+“npm install” yazilarak application server’in ihtiyaç duydugu pluginler otomatik yüklenir.
+root klasörünün içindeki haydiserv_init.sh, serverin /root klasörüne kopyalanir.
+Server konsolundayken “crontab -e” yazip açilan dosyanin içine crontab.txt içindeki satirlar yazilir.
+phpMyAdmin açilir, "haydi_db" adinda yeni bir database olusturulur ve haydi_db.sql dosyasi bu yeni database'e import edilir.
+Makine yeniden baslatildiginda application server 2095 portunda çalisacaktir.

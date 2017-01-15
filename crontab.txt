@@ -1,1 +1,2 @@
 @reboot /bin/sh /root/haydiserv_init.sh
+@daily /usr/bin/node /home/haydiserv/remove_old_activities.js
