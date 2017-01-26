@@ -1,0 +1,14 @@
+SAM project
+
+Droplet Name: centos-512mb-fra1-01
+IP Address: 139.59.150.7
+Username: root
+Password: unclesam1
+
+// haydiserv
+Port: 3000
+
+
+// digitalocean
+samirsamedow@gmail.com
+13371337s
