@@ -13,7 +13,7 @@ var options = {
 	host: 'localhost',
 	port: 3306,
 	user: 'root',
-	password: 'unclesam1',
+	password: '',
 	database: 'haydi_session'
 };
 
@@ -47,7 +47,7 @@ var mysql = require('mysql');
 var dbConnection = mysql.createConnection({
 	host: 'localhost',
 	user: 'root',
-	password: 'unclesam1',
+	password: '',
 	database: 'haydi_db'
 });
 
